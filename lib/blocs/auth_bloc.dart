@@ -20,6 +20,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       yield* _mapUserLoggedInToState();
     } else if (event is UserLoggedOut) {
       yield* _mapUserLoggedOutToState();
+    } else if (event is ContinueWithEmailEvent) {
+      yield AuthLoading();
+      try {
+        UserCredential userCredential =
+        await FirebaseAuth.instance.signInAnonymously();
+        yield AuthSuccess(userCredential.user!);
+      } on FirebaseAuthException catch (e) {
+        yield AuthFailure(errorMessage: e.message);
+      } catch (e) {
+        yield AuthFailure(errorMessage: 'Something went wrong');
+      }
     }
   }
 

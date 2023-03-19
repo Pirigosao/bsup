@@ -12,3 +12,5 @@ class AppStarted extends AuthEvent {}
 class UserLoggedIn extends AuthEvent {}
 
 class UserLoggedOut extends AuthEvent {}
+
+class ContinueWithEmailEvent extends AuthEvent {}
