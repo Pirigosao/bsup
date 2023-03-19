@@ -19,7 +19,7 @@ class SemiAuthWrapper extends StatelessWidget {
           child: Text('Continue with email'),
           onPressed: () {
             final authBloc = BlocProvider.of<AuthBloc>(context);
-            authBloc.add(ContinueWithEmailEvent());
+            authBloc.add(UserLoggedIn());
           },
         ),
       ),
