@@ -22,3 +22,5 @@ class AuthenticationLoggedIn extends AuthenticationEvent {
 }
 
 class AuthenticationLoggedOut extends AuthenticationEvent {}
+
+class ContinueWithEmailEvent extends AuthenticationEvent {}
