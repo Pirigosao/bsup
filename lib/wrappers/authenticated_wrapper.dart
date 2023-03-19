@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:meu_projeto/blocs/auth_bloc.dart';
-import 'package:meu_projeto/blocs/auth_event.dart';
-import 'package:meu_projeto/blocs/auth_state.dart';
-import 'package:meu_projeto/screens/home_screen.dart';
+import 'package:bsup/blocs/auth_bloc.dart';
+import 'package:bsup/blocs/auth_event.dart';
+import 'package:bsup/blocs/auth_state.dart';
+import 'package:bsup/screens/home_screen.dart';
 
 class AuthenticatedWrapper extends StatelessWidget {
   const AuthenticatedWrapper({Key? key}) : super(key: key);
