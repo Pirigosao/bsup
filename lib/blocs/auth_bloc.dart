@@ -10,26 +10,26 @@ import 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  AuthBloc() : super(AuthInitial());
+  AuthBloc() : super(AuthState.initial());
 
   @override
   Stream<AuthState> mapEventToState(AuthEvent event) async* {
     if (event is AppStarted) {
       yield* _mapAppStartedToState();
-    } else if (event is UserLoggedIn) {
-      yield* _mapUserLoggedInToState();
-    } else if (event is UserLoggedOut) {
+    } else if (event is LoggedIn) {
+      yield* _mapUserLoggedInToState(event.user);
+    } else if (event is LoggedOut) {
       yield* _mapUserLoggedOutToState();
     } else if (event is ContinueWithEmailEvent) {
-      yield AuthLoading();
+      yield AuthState.loading();
       try {
         UserCredential userCredential =
         await FirebaseAuth.instance.signInAnonymously();
-        yield AuthSuccess(userCredential.user!);
+        yield AuthState.loaded(userCredential.user!);
       } on FirebaseAuthException catch (e) {
-        yield AuthFailure(errorMessage: e.message);
+        yield AuthState.error(errorMessage: e.message!);
       } catch (e) {
-        yield AuthFailure(errorMessage: 'Something went wrong');
+        yield AuthState.error(errorMessage: 'Something went wrong');
       }
     }
   }
@@ -38,23 +38,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       final isSignedIn = _auth.currentUser != null;
       if (isSignedIn) {
-        yield AuthSuccess(_auth.currentUser!);
+        yield AuthState.loaded(_auth.currentUser!);
       } else {
-        yield AuthFailure();
+        yield AuthState.error(errorMessage: 'Not authenticated');
       }
     } catch (_) {
-      yield AuthFailure();
+      yield AuthState.error(errorMessage: 'Not authenticated');
     }
   }
 
-  Stream<AuthState> _mapUserLoggedInToState() async* {
-    final currentUser = _auth.currentUser;
-    if (currentUser != null) {
-      yield AuthSuccess(currentUser);
-    }
+  Stream<AuthState> _mapUserLoggedInToState(User user) async* {
+    yield AuthState.loaded(user);
   }
 
   Stream<AuthState> _mapUserLoggedOutToState() async* {
-    yield AuthFailure();
+    yield AuthState.error(errorMessage: 'Not authenticated');
   }
 }

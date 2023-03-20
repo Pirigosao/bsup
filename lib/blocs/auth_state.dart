@@ -8,8 +8,8 @@ class AuthState extends Equatable {
   final bool isLoading;
 
   const AuthState({
-    @required this.user,
-    @required this.isLoading,
+    required this.user,
+    required this.isLoading,
     this.errorMessage,
   });
 
@@ -25,7 +25,7 @@ class AuthState extends Equatable {
     return AuthState(user: user, isLoading: false);
   }
 
-  factory AuthState.error(String errorMessage) {
+  factory AuthState.error({String? errorMessage}) {
     return AuthState(user: null, isLoading: false, errorMessage: errorMessage);
   }
 
